@@ -4,6 +4,10 @@ import { Mail, Phone, MapPin, Send } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Header } from "@/components/layout/Header";
 import { Footer } from "@/components/layout/Footer";
+import { useState } from "react";
+import { z } from "zod";
+import { supabase } from "@/integrations/supabase/client";
+import { toast } from "sonner";
 
 export const Route = createFileRoute("/contact")({
   head: () => ({
@@ -23,7 +27,32 @@ const contactInfo = [
   { icon: MapPin, label: "Location", value: "Lae, Morobe Province, Papua New Guinea", href: null },
 ];
 
+const contactSchema = z.object({
+  name: z.string().trim().min(1, "Name required").max(100),
+  email: z.string().trim().email("Invalid email").max(255),
+  message: z.string().trim().min(5, "Message too short").max(2000),
+});
+
 function ContactPage() {
+  const [form, setForm] = useState({ name: "", email: "", message: "" });
+  const [busy, setBusy] = useState(false);
+
+  const submit = async (e: React.FormEvent) => {
+    e.preventDefault();
+    const parsed = contactSchema.safeParse(form);
+    if (!parsed.success) {
+      toast.error(parsed.error.issues[0].message);
+      return;
+    }
+    setBusy(true);
+    const { error } = await supabase.from("contact_messages").insert(parsed.data);
+    setBusy(false);
+    if (error) toast.error(error.message);
+    else {
+      toast.success("Message sent — I'll get back to you shortly.");
+      setForm({ name: "", email: "", message: "" });
+    }
+  };
   return (
     <div className="min-h-screen bg-background">
       <Header />
@@ -88,34 +117,43 @@ function ContactPage() {
                 <h3 className="font-heading text-lg font-semibold text-card-foreground">Send a Message</h3>
                 <p className="mt-1 text-sm text-muted-foreground">Fill in your details and I'll get back to you promptly.</p>
 
-                <form className="mt-6 space-y-4" onSubmit={(e) => e.preventDefault()}>
+                <form className="mt-6 space-y-4" onSubmit={submit}>
                   <div>
                     <label className="text-sm font-medium text-foreground">Name</label>
                     <input
                       type="text"
+                      value={form.name}
+                      onChange={(e) => setForm({ ...form, name: e.target.value })}
                       className="mt-1.5 w-full rounded-lg border border-input bg-background px-4 py-2.5 text-sm text-foreground placeholder:text-muted-foreground focus:border-primary focus:outline-none focus:ring-1 focus:ring-primary"
                       placeholder="Your full name"
+                      required
                     />
                   </div>
                   <div>
                     <label className="text-sm font-medium text-foreground">Email</label>
                     <input
                       type="email"
+                      value={form.email}
+                      onChange={(e) => setForm({ ...form, email: e.target.value })}
                       className="mt-1.5 w-full rounded-lg border border-input bg-background px-4 py-2.5 text-sm text-foreground placeholder:text-muted-foreground focus:border-primary focus:outline-none focus:ring-1 focus:ring-primary"
                       placeholder="your@email.com"
+                      required
                     />
                   </div>
                   <div>
                     <label className="text-sm font-medium text-foreground">Message</label>
                     <textarea
                       rows={4}
+                      value={form.message}
+                      onChange={(e) => setForm({ ...form, message: e.target.value })}
                       className="mt-1.5 w-full resize-none rounded-lg border border-input bg-background px-4 py-2.5 text-sm text-foreground placeholder:text-muted-foreground focus:border-primary focus:outline-none focus:ring-1 focus:ring-primary"
                       placeholder="How can I help you?"
+                      required
                     />
                   </div>
-                  <Button variant="hero" size="lg" className="w-full">
+                  <Button variant="hero" size="lg" className="w-full" type="submit" disabled={busy}>
                     <Send className="h-4 w-4" />
-                    Send Message
+                    {busy ? "Sending…" : "Send Message"}
                   </Button>
                 </form>
               </div>
