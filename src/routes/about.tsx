@@ -1,6 +1,6 @@
-import { createFileRoute } from "@tanstack/react-router";
+import { createFileRoute, Link } from "@tanstack/react-router";
 import { motion } from "framer-motion";
-import { MapPin, GraduationCap, Briefcase, Award } from "lucide-react";
+import { MapPin, GraduationCap, Briefcase, Award, Images, ArrowRight } from "lucide-react";
 import { Header } from "@/components/layout/Header";
 import { Footer } from "@/components/layout/Footer";
 
@@ -152,6 +152,35 @@ function AboutPage() {
                 <p className="mt-1 text-sm text-muted-foreground">WPU Career Expo & Open Day — 2024</p>
               </div>
             </div>
+          </motion.div>
+
+          {/* Gallery CTA */}
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.5 }}
+            className="mt-16"
+          >
+            <Link
+              to="/about/gallery"
+              className="group flex items-center justify-between rounded-2xl border border-border bg-card p-6 transition-colors hover:border-primary/50 hover:bg-accent/40"
+            >
+              <div className="flex items-center gap-4">
+                <div className="flex h-12 w-12 items-center justify-center rounded-xl bg-primary/10 text-primary">
+                  <Images className="h-6 w-6" />
+                </div>
+                <div>
+                  <h3 className="font-heading text-lg font-semibold text-card-foreground">
+                    Success Gallery
+                  </h3>
+                  <p className="text-sm text-muted-foreground">
+                    Photos and milestones from my professional journey.
+                  </p>
+                </div>
+              </div>
+              <ArrowRight className="h-5 w-5 text-muted-foreground transition-transform group-hover:translate-x-1 group-hover:text-foreground" />
+            </Link>
           </motion.div>
         </div>
       </section>
