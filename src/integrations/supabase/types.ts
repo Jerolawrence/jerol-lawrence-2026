@@ -299,6 +299,42 @@ export type Database = {
         }
         Relationships: []
       }
+      success_photos: {
+        Row: {
+          caption: string | null
+          created_at: string
+          created_by: string | null
+          id: string
+          image_url: string
+          sort_order: number
+          storage_path: string | null
+          title: string | null
+          updated_at: string
+        }
+        Insert: {
+          caption?: string | null
+          created_at?: string
+          created_by?: string | null
+          id?: string
+          image_url: string
+          sort_order?: number
+          storage_path?: string | null
+          title?: string | null
+          updated_at?: string
+        }
+        Update: {
+          caption?: string | null
+          created_at?: string
+          created_by?: string | null
+          id?: string
+          image_url?: string
+          sort_order?: number
+          storage_path?: string | null
+          title?: string | null
+          updated_at?: string
+        }
+        Relationships: []
+      }
       user_roles: {
         Row: {
           created_at: string
