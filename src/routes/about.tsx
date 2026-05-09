@@ -153,10 +153,6 @@ function AboutPage() {
               </div>
             </div>
           </motion.div>
-        </div>
-      </section>
-
-          </motion.div>
 
           {/* Gallery CTA */}
           <motion.div
