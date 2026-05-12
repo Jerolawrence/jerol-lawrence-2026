@@ -90,6 +90,7 @@ function AdminDashboard() {
   const navigate = useNavigate();
   const { user, isAdmin, loading } = useAuth();
   const [section, setSection] = useState<Section>("overview");
+  const [mobileOpen, setMobileOpen] = useState(false);
 
   useEffect(() => {
     if (!loading && (!user || !isAdmin)) navigate({ to: "/admin-portal" });
@@ -108,51 +109,62 @@ function AdminDashboard() {
     navigate({ to: "/admin-portal" });
   };
 
+  const Sidebar = () => (
+    <>
+      <div className="flex h-16 items-center gap-2 border-b border-sidebar-border px-6">
+        <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-sidebar-primary">
+          <Code2 className="h-4 w-4 text-sidebar-primary-foreground" />
+        </div>
+        <span className="font-heading font-bold text-sidebar-foreground">Admin Portal</span>
+      </div>
+      <nav className="flex flex-col gap-1 p-3">
+        {sidebarItems.map((item) => (
+          <button
+            key={item.id}
+            onClick={() => { setSection(item.id); setMobileOpen(false); }}
+            className={`flex items-center gap-3 rounded-lg px-3 py-2 text-sm font-medium transition-colors ${
+              section === item.id
+                ? "bg-sidebar-accent text-sidebar-foreground"
+                : "text-sidebar-foreground/60 hover:bg-sidebar-accent hover:text-sidebar-foreground"
+            }`}
+          >
+            <item.icon className="h-4 w-4" />
+            {item.label}
+          </button>
+        ))}
+      </nav>
+      <div className="mt-auto space-y-1 border-t border-sidebar-border p-3">
+        <Link to="/" className="flex items-center gap-3 rounded-lg px-3 py-2 text-sm font-medium text-sidebar-foreground/60 transition-colors hover:bg-sidebar-accent hover:text-sidebar-foreground">
+          <ExternalLink className="h-4 w-4" /> View Portfolio
+        </Link>
+        <button onClick={handleLogout} className="flex w-full items-center gap-3 rounded-lg px-3 py-2 text-sm font-medium text-sidebar-foreground/60 transition-colors hover:bg-sidebar-accent hover:text-sidebar-foreground">
+          <LogOut className="h-4 w-4" /> Sign out
+        </button>
+      </div>
+    </>
+  );
+
   return (
     <div className="flex min-h-screen bg-background">
-      <aside className="hidden w-64 shrink-0 border-r border-border bg-sidebar lg:block">
-        <div className="flex h-16 items-center gap-2 border-b border-sidebar-border px-6">
-          <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-sidebar-primary">
-            <Code2 className="h-4 w-4 text-sidebar-primary-foreground" />
-          </div>
-          <span className="font-heading font-bold text-sidebar-foreground">Admin Portal</span>
-        </div>
-
-        <nav className="flex flex-col gap-1 p-3">
-          {sidebarItems.map((item) => (
-            <button
-              key={item.id}
-              onClick={() => setSection(item.id)}
-              className={`flex items-center gap-3 rounded-lg px-3 py-2 text-sm font-medium transition-colors ${
-                section === item.id
-                  ? "bg-sidebar-accent text-sidebar-foreground"
-                  : "text-sidebar-foreground/60 hover:bg-sidebar-accent hover:text-sidebar-foreground"
-              }`}
-            >
-              <item.icon className="h-4 w-4" />
-              {item.label}
-            </button>
-          ))}
-        </nav>
-
-        <div className="mt-auto space-y-1 border-t border-sidebar-border p-3">
-          <Link to="/" className="flex items-center gap-3 rounded-lg px-3 py-2 text-sm font-medium text-sidebar-foreground/60 transition-colors hover:bg-sidebar-accent hover:text-sidebar-foreground">
-            <ExternalLink className="h-4 w-4" />
-            View Portfolio
-          </Link>
-          <button
-            onClick={handleLogout}
-            className="flex w-full items-center gap-3 rounded-lg px-3 py-2 text-sm font-medium text-sidebar-foreground/60 transition-colors hover:bg-sidebar-accent hover:text-sidebar-foreground"
-          >
-            <LogOut className="h-4 w-4" />
-            Sign out
-          </button>
-        </div>
+      <aside className="hidden w-64 shrink-0 flex-col border-r border-border bg-sidebar lg:flex">
+        <Sidebar />
       </aside>
 
+      {mobileOpen && (
+        <div className="fixed inset-0 z-50 lg:hidden">
+          <div className="absolute inset-0 bg-black/50" onClick={() => setMobileOpen(false)} />
+          <aside className="absolute left-0 top-0 flex h-full w-64 flex-col border-r border-border bg-sidebar">
+            <Sidebar />
+          </aside>
+        </div>
+      )}
+
       <main className="flex-1 overflow-auto">
-        <header className="flex h-16 items-center justify-between border-b border-border px-6">
-          <h1 className="font-heading text-lg font-bold text-foreground capitalize">{section}</h1>
+        <header className="flex h-16 items-center justify-between border-b border-border px-4 sm:px-6">
+          <div className="flex items-center gap-3">
+            <button onClick={() => setMobileOpen(true)} className="lg:hidden p-2 -ml-2 text-foreground"><Menu className="h-5 w-5" /></button>
+            <h1 className="font-heading text-lg font-bold text-foreground capitalize">{section}</h1>
+          </div>
           <div className="flex items-center gap-3">
             <span className="hidden text-xs text-muted-foreground sm:inline">{user.email}</span>
             <div className="flex h-8 w-8 items-center justify-center rounded-full bg-primary text-xs font-bold text-primary-foreground">
@@ -166,12 +178,17 @@ function AdminDashboard() {
           initial={{ opacity: 0, y: 8 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.25 }}
-          className="p-6"
+          className="p-4 sm:p-6"
         >
           {section === "overview" && <Overview />}
+          {section === "settings" && <SettingsManager />}
+          {section === "banners" && <BannersManager />}
+          {section === "media" && <MediaLibrary userId={user.id} />}
           {section === "profile" && <ProfileEditor userId={user.id} />}
           {section === "contacts" && <SiteContactsManager />}
           {section === "content" && <SiteContentManager />}
+          {section === "users" && <UsersManager />}
+          {section === "activity" && <ActivityLogPanel />}
           {section === "projects" && <ProjectsManager />}
           {section === "skills" && <SkillsManager />}
           {section === "documents" && <DocumentsManager userId={user.id} />}
