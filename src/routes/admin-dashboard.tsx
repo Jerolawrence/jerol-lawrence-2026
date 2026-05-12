@@ -19,9 +19,20 @@ import {
   Upload,
   Phone,
   FileEdit,
+  Palette,
+  Image as ImageIcon,
+  Library,
+  Users as UsersIcon,
+  Activity,
+  Menu,
 } from "lucide-react";
 import { SiteContactsManager } from "@/components/admin/SiteContactsManager";
 import { SiteContentManager } from "@/components/admin/SiteContentManager";
+import { SettingsManager } from "@/components/admin/SettingsManager";
+import { BannersManager } from "@/components/admin/BannersManager";
+import { MediaLibrary } from "@/components/admin/MediaLibrary";
+import { UsersManager } from "@/components/admin/UsersManager";
+import { ActivityLogPanel } from "@/components/admin/ActivityLogPanel";
 import { useEffect, useState } from "react";
 import { useAuth } from "@/hooks/use-auth";
 import { supabase } from "@/integrations/supabase/client";
