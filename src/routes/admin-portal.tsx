@@ -57,6 +57,32 @@ function AdminLoginPage() {
     }
   };
 
+  const handleMagicLink = async () => {
+    if (!email) {
+      toast.error("Enter your owner email first");
+      return;
+    }
+    setBusy(true);
+    try {
+      const { error } = await supabase.auth.signInWithOtp({
+        email,
+        options: {
+          emailRedirectTo: `${window.location.origin}/admin-dashboard`,
+          shouldCreateUser: false,
+        },
+      });
+      if (error) throw error;
+      await supabase.from("security_logs").insert({ event: "magic_link_sent", email, success: true });
+      toast.success("Secret login link sent. Check your inbox.");
+    } catch (err) {
+      const message = err instanceof Error ? err.message : "Could not send link";
+      await supabase.from("security_logs").insert({ event: "magic_link_sent", email, success: false, metadata: { message } });
+      toast.error(message);
+    } finally {
+      setBusy(false);
+    }
+  };
+
   return (
     <div className="relative flex min-h-screen items-center justify-center overflow-hidden bg-background px-4">
       <div className="grid-bg pointer-events-none absolute inset-0 opacity-20" />
