@@ -37,6 +37,7 @@ const contactSchema = z.object({
 function ContactPage() {
   const [form, setForm] = useState({ name: "", email: "", message: "" });
   const [busy, setBusy] = useState(false);
+  const contactInfo = useSiteContacts("contact");
 
   const submit = async (e: React.FormEvent) => {
     e.preventDefault();
