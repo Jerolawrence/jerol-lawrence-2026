@@ -1,6 +1,7 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { motion } from "framer-motion";
-import { Mail, Phone, MapPin, Send } from "lucide-react";
+import * as Icons from "lucide-react";
+import { Send } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Header } from "@/components/layout/Header";
 import { Footer } from "@/components/layout/Footer";
@@ -8,6 +9,7 @@ import { useState } from "react";
 import { z } from "zod";
 import { supabase } from "@/integrations/supabase/client";
 import { toast } from "sonner";
+import { useSiteContacts } from "@/hooks/use-site-data";
 
 export const Route = createFileRoute("/contact")({
   head: () => ({
@@ -21,11 +23,10 @@ export const Route = createFileRoute("/contact")({
   component: ContactPage,
 });
 
-const contactInfo = [
-  { icon: Mail, label: "Email", value: "lawrencejerol@gmail.com", href: "mailto:lawrencejerol@gmail.com" },
-  { icon: Phone, label: "Phone", value: "+675 70914027", href: "tel:+67570914027" },
-  { icon: MapPin, label: "Location", value: "Lae, Morobe Province, Papua New Guinea", href: null },
-];
+function DynIcon({ name, className }: { name: string | null; className?: string }) {
+  const Cmp = (name && (Icons as unknown as Record<string, React.ComponentType<{ className?: string }>>)[name]) || Icons.Link2;
+  return <Cmp className={className} />;
+}
 
 const contactSchema = z.object({
   name: z.string().trim().min(1, "Name required").max(100),
@@ -36,6 +37,7 @@ const contactSchema = z.object({
 function ContactPage() {
   const [form, setForm] = useState({ name: "", email: "", message: "" });
   const [busy, setBusy] = useState(false);
+  const contactInfo = useSiteContacts("contact");
 
   const submit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -81,14 +83,14 @@ function ContactPage() {
               className="space-y-6"
             >
               {contactInfo.map((item) => (
-                <div key={item.label} className="flex items-start gap-4 rounded-xl border border-border bg-card p-5">
+                <div key={item.id} className="flex items-start gap-4 rounded-xl border border-border bg-card p-5">
                   <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-lg bg-badge-bg">
-                    <item.icon className="h-5 w-5 text-primary" />
+                    <DynIcon name={item.icon} className="h-5 w-5 text-primary" />
                   </div>
                   <div>
                     <p className="text-sm font-medium text-muted-foreground">{item.label}</p>
-                    {item.href ? (
-                      <a href={item.href} className="text-foreground font-medium hover:text-primary transition-colors">
+                    {item.url ? (
+                      <a href={item.url} target={item.url.startsWith("http") ? "_blank" : undefined} rel="noopener noreferrer" className="text-foreground font-medium hover:text-primary transition-colors">
                         {item.value}
                       </a>
                     ) : (
@@ -97,6 +99,9 @@ function ContactPage() {
                   </div>
                 </div>
               ))}
+              {contactInfo.length === 0 && (
+                <p className="text-sm text-muted-foreground">No contact details published yet.</p>
+              )}
 
               <div className="rounded-xl border border-primary/20 bg-badge-bg p-6">
                 <h3 className="font-heading font-semibold text-foreground">Open to Opportunities</h3>

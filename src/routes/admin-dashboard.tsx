@@ -17,7 +17,11 @@ import {
   ExternalLink,
   Copy,
   Upload,
+  Phone,
+  FileEdit,
 } from "lucide-react";
+import { SiteContactsManager } from "@/components/admin/SiteContactsManager";
+import { SiteContentManager } from "@/components/admin/SiteContentManager";
 import { useEffect, useState } from "react";
 import { useAuth } from "@/hooks/use-auth";
 import { supabase } from "@/integrations/supabase/client";
@@ -37,6 +41,8 @@ export const Route = createFileRoute("/admin-dashboard")({
 type Section =
   | "overview"
   | "profile"
+  | "contacts"
+  | "content"
   | "projects"
   | "skills"
   | "documents"
@@ -48,6 +54,8 @@ type Section =
 const sidebarItems: { id: Section; icon: typeof LayoutDashboard; label: string }[] = [
   { id: "overview", icon: LayoutDashboard, label: "Overview" },
   { id: "profile", icon: UserIcon, label: "Profile" },
+  { id: "contacts", icon: Phone, label: "Contact Details" },
+  { id: "content", icon: FileEdit, label: "Site Content" },
   { id: "projects", icon: FolderGit2, label: "Projects" },
   { id: "skills", icon: Code2, label: "Skills" },
   { id: "documents", icon: FileText, label: "CV & Documents" },
@@ -141,6 +149,8 @@ function AdminDashboard() {
         >
           {section === "overview" && <Overview />}
           {section === "profile" && <ProfileEditor userId={user.id} />}
+          {section === "contacts" && <SiteContactsManager />}
+          {section === "content" && <SiteContentManager />}
           {section === "projects" && <ProjectsManager />}
           {section === "skills" && <SkillsManager />}
           {section === "documents" && <DocumentsManager userId={user.id} />}

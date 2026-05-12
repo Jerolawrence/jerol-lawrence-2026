@@ -269,6 +269,84 @@ export type Database = {
         }
         Relationships: []
       }
+      site_contacts: {
+        Row: {
+          created_at: string
+          icon: string | null
+          id: string
+          is_enabled: boolean
+          label: string
+          show_in_footer: boolean
+          show_on_contact_page: boolean
+          sort_order: number
+          type: string
+          updated_at: string
+          url: string | null
+          value: string
+        }
+        Insert: {
+          created_at?: string
+          icon?: string | null
+          id?: string
+          is_enabled?: boolean
+          label: string
+          show_in_footer?: boolean
+          show_on_contact_page?: boolean
+          sort_order?: number
+          type: string
+          updated_at?: string
+          url?: string | null
+          value: string
+        }
+        Update: {
+          created_at?: string
+          icon?: string | null
+          id?: string
+          is_enabled?: boolean
+          label?: string
+          show_in_footer?: boolean
+          show_on_contact_page?: boolean
+          sort_order?: number
+          type?: string
+          updated_at?: string
+          url?: string | null
+          value?: string
+        }
+        Relationships: []
+      }
+      site_content: {
+        Row: {
+          content: string | null
+          content_json: Json | null
+          created_at: string
+          id: string
+          is_published: boolean
+          key: string
+          title: string | null
+          updated_at: string
+        }
+        Insert: {
+          content?: string | null
+          content_json?: Json | null
+          created_at?: string
+          id?: string
+          is_published?: boolean
+          key: string
+          title?: string | null
+          updated_at?: string
+        }
+        Update: {
+          content?: string | null
+          content_json?: Json | null
+          created_at?: string
+          id?: string
+          is_published?: boolean
+          key?: string
+          title?: string | null
+          updated_at?: string
+        }
+        Relationships: []
+      }
       skills: {
         Row: {
           category: string
