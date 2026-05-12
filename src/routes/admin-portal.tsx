@@ -135,6 +135,14 @@ function AdminLoginPage() {
               {busy ? "Working…" : mode === "signin" ? "Sign In" : "Create Admin Account"}
               <ArrowRight className="h-4 w-4" />
             </Button>
+            <div className="relative my-2 text-center text-[11px] uppercase tracking-wider text-muted-foreground">
+              <span className="bg-card px-2">or</span>
+              <div className="absolute inset-x-0 top-1/2 -z-10 h-px bg-border" />
+            </div>
+            <Button type="button" variant="outline" size="lg" className="w-full" onClick={handleMagicLink} disabled={busy}>
+              <Mail className="h-4 w-4" />
+              Email me a secret login link
+            </Button>
             <p className="text-center text-xs text-muted-foreground">
               {mode === "signin" ? "First time? " : "Have an account? "}
               <button
