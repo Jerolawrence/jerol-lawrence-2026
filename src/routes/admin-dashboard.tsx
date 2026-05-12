@@ -17,7 +17,11 @@ import {
   ExternalLink,
   Copy,
   Upload,
+  Phone,
+  FileEdit,
 } from "lucide-react";
+import { SiteContactsManager } from "@/components/admin/SiteContactsManager";
+import { SiteContentManager } from "@/components/admin/SiteContentManager";
 import { useEffect, useState } from "react";
 import { useAuth } from "@/hooks/use-auth";
 import { supabase } from "@/integrations/supabase/client";
