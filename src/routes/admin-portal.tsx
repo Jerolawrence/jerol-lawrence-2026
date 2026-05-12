@@ -57,6 +57,32 @@ function AdminLoginPage() {
     }
   };
 
+  const handleMagicLink = async () => {
+    if (!email) {
+      toast.error("Enter your owner email first");
+      return;
+    }
+    setBusy(true);
+    try {
+      const { error } = await supabase.auth.signInWithOtp({
+        email,
+        options: {
+          emailRedirectTo: `${window.location.origin}/admin-dashboard`,
+          shouldCreateUser: false,
+        },
+      });
+      if (error) throw error;
+      await supabase.from("security_logs").insert({ event: "magic_link_sent", email, success: true });
+      toast.success("Secret login link sent. Check your inbox.");
+    } catch (err) {
+      const message = err instanceof Error ? err.message : "Could not send link";
+      await supabase.from("security_logs").insert({ event: "magic_link_sent", email, success: false, metadata: { message } });
+      toast.error(message);
+    } finally {
+      setBusy(false);
+    }
+  };
+
   return (
     <div className="relative flex min-h-screen items-center justify-center overflow-hidden bg-background px-4">
       <div className="grid-bg pointer-events-none absolute inset-0 opacity-20" />
@@ -108,6 +134,14 @@ function AdminLoginPage() {
             <Button variant="hero" size="lg" className="w-full" type="submit" disabled={busy}>
               {busy ? "Working…" : mode === "signin" ? "Sign In" : "Create Admin Account"}
               <ArrowRight className="h-4 w-4" />
+            </Button>
+            <div className="relative my-2 text-center text-[11px] uppercase tracking-wider text-muted-foreground">
+              <span className="bg-card px-2">or</span>
+              <div className="absolute inset-x-0 top-1/2 -z-10 h-px bg-border" />
+            </div>
+            <Button type="button" variant="outline" size="lg" className="w-full" onClick={handleMagicLink} disabled={busy}>
+              <Mail className="h-4 w-4" />
+              Email me a secret login link
             </Button>
             <p className="text-center text-xs text-muted-foreground">
               {mode === "signin" ? "First time? " : "Have an account? "}
