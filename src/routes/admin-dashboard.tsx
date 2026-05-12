@@ -41,6 +41,8 @@ export const Route = createFileRoute("/admin-dashboard")({
 type Section =
   | "overview"
   | "profile"
+  | "contacts"
+  | "content"
   | "projects"
   | "skills"
   | "documents"
@@ -52,6 +54,8 @@ type Section =
 const sidebarItems: { id: Section; icon: typeof LayoutDashboard; label: string }[] = [
   { id: "overview", icon: LayoutDashboard, label: "Overview" },
   { id: "profile", icon: UserIcon, label: "Profile" },
+  { id: "contacts", icon: Phone, label: "Contact Details" },
+  { id: "content", icon: FileEdit, label: "Site Content" },
   { id: "projects", icon: FolderGit2, label: "Projects" },
   { id: "skills", icon: Code2, label: "Skills" },
   { id: "documents", icon: FileText, label: "CV & Documents" },
