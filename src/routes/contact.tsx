@@ -83,14 +83,14 @@ function ContactPage() {
               className="space-y-6"
             >
               {contactInfo.map((item) => (
-                <div key={item.label} className="flex items-start gap-4 rounded-xl border border-border bg-card p-5">
+                <div key={item.id} className="flex items-start gap-4 rounded-xl border border-border bg-card p-5">
                   <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-lg bg-badge-bg">
-                    <item.icon className="h-5 w-5 text-primary" />
+                    <DynIcon name={item.icon} className="h-5 w-5 text-primary" />
                   </div>
                   <div>
                     <p className="text-sm font-medium text-muted-foreground">{item.label}</p>
-                    {item.href ? (
-                      <a href={item.href} className="text-foreground font-medium hover:text-primary transition-colors">
+                    {item.url ? (
+                      <a href={item.url} target={item.url.startsWith("http") ? "_blank" : undefined} rel="noopener noreferrer" className="text-foreground font-medium hover:text-primary transition-colors">
                         {item.value}
                       </a>
                     ) : (
@@ -99,6 +99,9 @@ function ContactPage() {
                   </div>
                 </div>
               ))}
+              {contactInfo.length === 0 && (
+                <p className="text-sm text-muted-foreground">No contact details published yet.</p>
+              )}
 
               <div className="rounded-xl border border-primary/20 bg-badge-bg p-6">
                 <h3 className="font-heading font-semibold text-foreground">Open to Opportunities</h3>
