@@ -149,6 +149,8 @@ function AdminDashboard() {
         >
           {section === "overview" && <Overview />}
           {section === "profile" && <ProfileEditor userId={user.id} />}
+          {section === "contacts" && <SiteContactsManager />}
+          {section === "content" && <SiteContentManager />}
           {section === "projects" && <ProjectsManager />}
           {section === "skills" && <SkillsManager />}
           {section === "documents" && <DocumentsManager userId={user.id} />}
