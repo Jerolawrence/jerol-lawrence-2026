@@ -1,6 +1,7 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { motion } from "framer-motion";
-import { Mail, Phone, MapPin, Send } from "lucide-react";
+import * as Icons from "lucide-react";
+import { Send } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Header } from "@/components/layout/Header";
 import { Footer } from "@/components/layout/Footer";
@@ -8,6 +9,7 @@ import { useState } from "react";
 import { z } from "zod";
 import { supabase } from "@/integrations/supabase/client";
 import { toast } from "sonner";
+import { useSiteContacts } from "@/hooks/use-site-data";
 
 export const Route = createFileRoute("/contact")({
   head: () => ({
@@ -21,11 +23,10 @@ export const Route = createFileRoute("/contact")({
   component: ContactPage,
 });
 
-const contactInfo = [
-  { icon: Mail, label: "Email", value: "lawrencejerol@gmail.com", href: "mailto:lawrencejerol@gmail.com" },
-  { icon: Phone, label: "Phone", value: "+675 70914027", href: "tel:+67570914027" },
-  { icon: MapPin, label: "Location", value: "Lae, Morobe Province, Papua New Guinea", href: null },
-];
+function DynIcon({ name, className }: { name: string | null; className?: string }) {
+  const Cmp = (name && (Icons as unknown as Record<string, React.ComponentType<{ className?: string }>>)[name]) || Icons.Link2;
+  return <Cmp className={className} />;
+}
 
 const contactSchema = z.object({
   name: z.string().trim().min(1, "Name required").max(100),
