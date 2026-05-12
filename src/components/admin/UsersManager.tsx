@@ -50,7 +50,7 @@ export function UsersManager() {
 
   const removeRole = async (user_id: string, role: string, email: string | null) => {
     if (!confirm(`Remove ${role} role from this user?`)) return;
-    await supabase.from("user_roles").delete().eq("user_id", user_id).eq("role", role);
+    await supabase.from("user_roles").delete().eq("user_id", user_id).eq("role", role as "admin" | "viewer");
     logActivity("user.role_remove", "user", user_id, { email, role });
     load();
   };
