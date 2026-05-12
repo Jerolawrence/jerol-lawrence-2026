@@ -1,7 +1,16 @@
 import { Link } from "@tanstack/react-router";
-import { Code2, ExternalLink, Mail } from "lucide-react";
+import * as Icons from "lucide-react";
+import { Code2 } from "lucide-react";
+import { useSiteContacts } from "@/hooks/use-site-data";
+
+function Icon({ name, className }: { name: string | null; className?: string }) {
+  const Cmp = (name && (Icons as unknown as Record<string, React.ComponentType<{ className?: string }>>)[name]) || Icons.Link2;
+  return <Cmp className={className} />;
+}
 
 export function Footer() {
+  const contacts = useSiteContacts("footer");
+
   return (
     <footer className="border-t border-border bg-background">
       <div className="mx-auto max-w-6xl px-6 py-12">
@@ -20,16 +29,18 @@ export function Footer() {
             <Link to="/contact" className="text-sm text-muted-foreground transition-colors hover:text-foreground">Contact</Link>
           </nav>
 
-          <div className="flex items-center gap-3">
-            <a href="mailto:lawrencejerol@gmail.com" className="flex h-9 w-9 items-center justify-center rounded-lg border border-border text-muted-foreground transition-colors hover:bg-accent hover:text-foreground">
-              <Mail className="h-4 w-4" />
-            </a>
-            <a href="https://github.com" target="_blank" rel="noopener noreferrer" className="flex h-9 w-9 items-center justify-center rounded-lg border border-border text-muted-foreground transition-colors hover:bg-accent hover:text-foreground">
-              <ExternalLink className="h-4 w-4" />
-            </a>
-            <a href="https://linkedin.com" target="_blank" rel="noopener noreferrer" className="flex h-9 w-9 items-center justify-center rounded-lg border border-border text-muted-foreground transition-colors hover:bg-accent hover:text-foreground">
-              <ExternalLink className="h-4 w-4" />
-            </a>
+          <div className="flex flex-wrap items-center justify-center gap-3">
+            {contacts.map((c) => {
+              const inner = <Icon name={c.icon} className="h-4 w-4" />;
+              const cls = "flex h-9 w-9 items-center justify-center rounded-lg border border-border text-muted-foreground transition-colors hover:bg-accent hover:text-foreground";
+              return c.url ? (
+                <a key={c.id} href={c.url} target={c.url.startsWith("http") ? "_blank" : undefined} rel="noopener noreferrer" title={`${c.label}: ${c.value}`} className={cls}>
+                  {inner}
+                </a>
+              ) : (
+                <span key={c.id} title={`${c.label}: ${c.value}`} className={cls}>{inner}</span>
+              );
+            })}
           </div>
         </div>
 
