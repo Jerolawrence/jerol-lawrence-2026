@@ -10,7 +10,7 @@ export async function logActivity(action: string, target_type?: string, target_i
       action,
       target_type: target_type ?? null,
       target_id: target_id ?? null,
-      metadata: metadata ?? null,
+      metadata: (metadata ?? null) as never,
     });
   } catch {
     // best-effort
