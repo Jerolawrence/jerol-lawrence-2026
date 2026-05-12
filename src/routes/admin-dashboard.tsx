@@ -51,6 +51,9 @@ export const Route = createFileRoute("/admin-dashboard")({
 
 type Section =
   | "overview"
+  | "settings"
+  | "banners"
+  | "media"
   | "profile"
   | "contacts"
   | "content"
@@ -59,11 +62,16 @@ type Section =
   | "documents"
   | "sharing"
   | "messages"
+  | "users"
+  | "activity"
   | "analytics"
   | "security";
 
 const sidebarItems: { id: Section; icon: typeof LayoutDashboard; label: string }[] = [
   { id: "overview", icon: LayoutDashboard, label: "Overview" },
+  { id: "settings", icon: Palette, label: "Site Settings" },
+  { id: "banners", icon: ImageIcon, label: "Banners" },
+  { id: "media", icon: Library, label: "Media Library" },
   { id: "profile", icon: UserIcon, label: "Profile" },
   { id: "contacts", icon: Phone, label: "Contact Details" },
   { id: "content", icon: FileEdit, label: "Site Content" },
@@ -72,6 +80,8 @@ const sidebarItems: { id: Section; icon: typeof LayoutDashboard; label: string }
   { id: "documents", icon: FileText, label: "CV & Documents" },
   { id: "sharing", icon: Share2, label: "Sharing" },
   { id: "messages", icon: Settings, label: "Messages" },
+  { id: "users", icon: UsersIcon, label: "Users & Roles" },
+  { id: "activity", icon: Activity, label: "Activity Log" },
   { id: "analytics", icon: BarChart3, label: "Analytics" },
   { id: "security", icon: Shield, label: "Security" },
 ];
