@@ -10,6 +10,7 @@ function Icon({ name, className }: { name: string | null; className?: string }) 
 
 export function Footer() {
   const contacts = useSiteContacts("footer");
+  const navigate = useNavigate();
 
   return (
     <footer className="border-t border-border bg-background">
