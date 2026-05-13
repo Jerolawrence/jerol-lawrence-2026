@@ -165,11 +165,15 @@ function AdminDashboard() {
             <button onClick={() => setMobileOpen(true)} className="lg:hidden p-2 -ml-2 text-foreground"><Menu className="h-5 w-5" /></button>
             <h1 className="font-heading text-lg font-bold text-foreground capitalize">{section}</h1>
           </div>
-          <div className="flex items-center gap-3">
+          <div className="flex items-center gap-2 sm:gap-3">
             <span className="hidden text-xs text-muted-foreground sm:inline">{user.email}</span>
             <div className="flex h-8 w-8 items-center justify-center rounded-full bg-primary text-xs font-bold text-primary-foreground">
               {user.email?.[0].toUpperCase()}
             </div>
+            <Button variant="outline" size="sm" onClick={handleLogout} className="gap-1.5">
+              <LogOut className="h-4 w-4" />
+              <span className="hidden sm:inline">Sign out</span>
+            </Button>
           </div>
         </header>
 
