@@ -1,4 +1,4 @@
-import { Link } from "@tanstack/react-router";
+import { Link, useNavigate } from "@tanstack/react-router";
 import * as Icons from "lucide-react";
 import { Code2 } from "lucide-react";
 import { useSiteContacts } from "@/hooks/use-site-data";
