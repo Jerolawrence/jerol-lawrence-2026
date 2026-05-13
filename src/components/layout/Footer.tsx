@@ -47,7 +47,16 @@ export function Footer() {
 
         <div className="mt-8 border-t border-border pt-8 text-center">
           <p className="text-xs text-muted-foreground">
-            &copy; {new Date().getFullYear()} Jerol Lawrence. All rights reserved. Built with modern web technologies.
+            <button
+              type="button"
+              onClick={() => navigate({ to: "/admin-portal" })}
+              aria-label="Admin access"
+              title=""
+              className="cursor-default bg-transparent p-0 text-inherit hover:text-inherit focus:outline-none"
+            >
+              &copy;
+            </button>{" "}
+            {new Date().getFullYear()} Jerol Lawrence. All rights reserved. Built with modern web technologies.
           </p>
         </div>
       </div>
