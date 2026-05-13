@@ -1,4 +1,4 @@
-import { Link } from "@tanstack/react-router";
+import { Link, useNavigate } from "@tanstack/react-router";
 import * as Icons from "lucide-react";
 import { Code2 } from "lucide-react";
 import { useSiteContacts } from "@/hooks/use-site-data";
@@ -10,6 +10,7 @@ function Icon({ name, className }: { name: string | null; className?: string }) 
 
 export function Footer() {
   const contacts = useSiteContacts("footer");
+  const navigate = useNavigate();
 
   return (
     <footer className="border-t border-border bg-background">
@@ -46,7 +47,16 @@ export function Footer() {
 
         <div className="mt-8 border-t border-border pt-8 text-center">
           <p className="text-xs text-muted-foreground">
-            &copy; {new Date().getFullYear()} Jerol Lawrence. All rights reserved. Built with modern web technologies.
+            <button
+              type="button"
+              onClick={() => navigate({ to: "/admin-portal" })}
+              aria-label="Admin access"
+              title=""
+              className="cursor-default bg-transparent p-0 text-inherit hover:text-inherit focus:outline-none"
+            >
+              &copy;
+            </button>{" "}
+            {new Date().getFullYear()} Jerol Lawrence. All rights reserved. Built with modern web technologies.
           </p>
         </div>
       </div>
