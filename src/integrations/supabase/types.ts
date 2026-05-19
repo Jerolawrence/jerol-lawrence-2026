@@ -580,7 +580,48 @@ export type Database = {
       }
     }
     Views: {
-      [_ in never]: never
+      profiles_public: {
+        Row: {
+          avatar_url: string | null
+          bio: string | null
+          created_at: string | null
+          full_name: string | null
+          github_url: string | null
+          headline: string | null
+          id: string | null
+          linkedin_url: string | null
+          location: string | null
+          updated_at: string | null
+          website_url: string | null
+        }
+        Insert: {
+          avatar_url?: string | null
+          bio?: string | null
+          created_at?: string | null
+          full_name?: string | null
+          github_url?: string | null
+          headline?: string | null
+          id?: string | null
+          linkedin_url?: string | null
+          location?: string | null
+          updated_at?: string | null
+          website_url?: string | null
+        }
+        Update: {
+          avatar_url?: string | null
+          bio?: string | null
+          created_at?: string | null
+          full_name?: string | null
+          github_url?: string | null
+          headline?: string | null
+          id?: string | null
+          linkedin_url?: string | null
+          location?: string | null
+          updated_at?: string | null
+          website_url?: string | null
+        }
+        Relationships: []
+      }
     }
     Functions: {
       has_role: {
@@ -591,6 +632,15 @@ export type Database = {
         Returns: boolean
       }
       is_owner_email: { Args: { _email: string }; Returns: boolean }
+      log_security_event: {
+        Args: {
+          _email: string
+          _event: string
+          _metadata: Json
+          _success: boolean
+        }
+        Returns: undefined
+      }
     }
     Enums: {
       app_role: "admin" | "viewer"
