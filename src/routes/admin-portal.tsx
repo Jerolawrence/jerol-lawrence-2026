@@ -37,7 +37,7 @@ function AdminLoginPage() {
     try {
       await supabase.rpc("log_security_event", {
         _event: event,
-        _email: emailValue ?? null,
+        _email: emailValue ?? "",
         _success: success,
         _metadata: (metadata ?? null) as never,
       });
