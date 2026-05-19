@@ -74,14 +74,18 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
     meta: [
       { charSet: "utf-8" },
       { name: "viewport", content: "width=device-width, initial-scale=1" },
-      { title: "Lovable App" },
-      { name: "description", content: "Lovable Generated Project" },
+      { title: "Jerol Lawrence" },
+      { name: "description", content: "Always persistent, determined and encouraged." },
       { name: "author", content: "Lovable" },
-      { property: "og:title", content: "Lovable App" },
-      { property: "og:description", content: "Lovable Generated Project" },
+      { property: "og:title", content: "Jerol Lawrence" },
+      { property: "og:description", content: "Always persistent, determined and encouraged." },
       { property: "og:type", content: "website" },
       { name: "twitter:card", content: "summary" },
       { name: "twitter:site", content: "@Lovable" },
+      { name: "twitter:title", content: "Jerol Lawrence" },
+      { name: "twitter:description", content: "Always persistent, determined and encouraged." },
+      { property: "og:image", content: "https://storage.googleapis.com/gpt-engineer-file-uploads/4Cz3Zv3LdyZvE3KOG9e18N7NOtn2/social-images/social-1779166200038-Jerol_ID_Size_Photo.webp" },
+      { name: "twitter:image", content: "https://storage.googleapis.com/gpt-engineer-file-uploads/4Cz3Zv3LdyZvE3KOG9e18N7NOtn2/social-images/social-1779166200038-Jerol_ID_Size_Photo.webp" },
     ],
     links: [
       {
