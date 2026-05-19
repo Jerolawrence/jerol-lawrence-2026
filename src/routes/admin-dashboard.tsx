@@ -67,23 +67,44 @@ type Section =
   | "analytics"
   | "security";
 
-const sidebarItems: { id: Section; icon: typeof LayoutDashboard; label: string }[] = [
-  { id: "overview", icon: LayoutDashboard, label: "Overview" },
-  { id: "settings", icon: Palette, label: "Site Settings" },
-  { id: "banners", icon: ImageIcon, label: "Banners" },
-  { id: "media", icon: Library, label: "Media Library" },
-  { id: "profile", icon: UserIcon, label: "Profile" },
-  { id: "contacts", icon: Phone, label: "Contact Details" },
-  { id: "content", icon: FileEdit, label: "Site Content" },
-  { id: "projects", icon: FolderGit2, label: "Projects" },
-  { id: "skills", icon: Code2, label: "Skills" },
-  { id: "documents", icon: FileText, label: "CV & Documents" },
-  { id: "sharing", icon: Share2, label: "Sharing" },
-  { id: "messages", icon: Settings, label: "Messages" },
-  { id: "users", icon: UsersIcon, label: "Users & Roles" },
-  { id: "activity", icon: Activity, label: "Activity Log" },
-  { id: "analytics", icon: BarChart3, label: "Analytics" },
-  { id: "security", icon: Shield, label: "Security" },
+const sidebarGroups: {
+  label: string;
+  items: { id: Section; icon: typeof LayoutDashboard; label: string }[];
+}[] = [
+  {
+    label: "Dashboard",
+    items: [{ id: "overview", icon: LayoutDashboard, label: "Overview" }],
+  },
+  {
+    label: "Content",
+    items: [
+      { id: "profile", icon: UserIcon, label: "Profile" },
+      { id: "content", icon: FileEdit, label: "Site Content" },
+      { id: "projects", icon: FolderGit2, label: "Projects" },
+      { id: "skills", icon: Code2, label: "Skills" },
+      { id: "documents", icon: FileText, label: "CV & Documents" },
+      { id: "banners", icon: ImageIcon, label: "Banners" },
+      { id: "media", icon: Library, label: "Media Library" },
+    ],
+  },
+  {
+    label: "Engagement",
+    items: [
+      { id: "contacts", icon: Phone, label: "Contact Details" },
+      { id: "messages", icon: Settings, label: "Messages" },
+      { id: "sharing", icon: Share2, label: "Sharing" },
+      { id: "analytics", icon: BarChart3, label: "Analytics" },
+    ],
+  },
+  {
+    label: "Administration",
+    items: [
+      { id: "settings", icon: Palette, label: "Site Settings" },
+      { id: "users", icon: UsersIcon, label: "Users & Roles" },
+      { id: "activity", icon: Activity, label: "Activity Log" },
+      { id: "security", icon: Shield, label: "Security" },
+    ],
+  },
 ];
 
 function AdminDashboard() {
