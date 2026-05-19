@@ -138,20 +138,27 @@ function AdminDashboard() {
         </div>
         <span className="font-heading font-bold text-sidebar-foreground">Admin Portal</span>
       </div>
-      <nav className="flex flex-col gap-1 p-3">
-        {sidebarItems.map((item) => (
-          <button
-            key={item.id}
-            onClick={() => { setSection(item.id); setMobileOpen(false); }}
-            className={`flex items-center gap-3 rounded-lg px-3 py-2 text-sm font-medium transition-colors ${
-              section === item.id
-                ? "bg-sidebar-accent text-sidebar-foreground"
-                : "text-sidebar-foreground/60 hover:bg-sidebar-accent hover:text-sidebar-foreground"
-            }`}
-          >
-            <item.icon className="h-4 w-4" />
-            {item.label}
-          </button>
+      <nav className="flex flex-col gap-4 p-3">
+        {sidebarGroups.map((group) => (
+          <div key={group.label} className="flex flex-col gap-1">
+            <p className="px-3 pb-1 text-[10px] font-semibold uppercase tracking-wider text-sidebar-foreground/40">
+              {group.label}
+            </p>
+            {group.items.map((item) => (
+              <button
+                key={item.id}
+                onClick={() => { setSection(item.id); setMobileOpen(false); }}
+                className={`flex items-center gap-3 rounded-lg px-3 py-2 text-sm font-medium transition-colors ${
+                  section === item.id
+                    ? "bg-sidebar-accent text-sidebar-foreground"
+                    : "text-sidebar-foreground/60 hover:bg-sidebar-accent hover:text-sidebar-foreground"
+                }`}
+              >
+                <item.icon className="h-4 w-4" />
+                {item.label}
+              </button>
+            ))}
+          </div>
         ))}
       </nav>
       <div className="mt-auto space-y-1 border-t border-sidebar-border p-3">
