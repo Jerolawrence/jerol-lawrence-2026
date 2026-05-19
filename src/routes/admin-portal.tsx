@@ -2,10 +2,11 @@ import { createFileRoute, Link, useNavigate } from "@tanstack/react-router";
 import { motion } from "framer-motion";
 import { Lock, Mail, ArrowRight, KeyRound, ShieldCheck } from "lucide-react";
 import { Button } from "@/components/ui/button";
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { supabase } from "@/integrations/supabase/client";
 import { useAuth } from "@/hooks/use-auth";
 import { toast } from "sonner";
+import { verifyAdminPasskey } from "@/lib/admin-gate.functions";
 
 export const Route = createFileRoute("/admin-portal")({
   head: () => ({
@@ -17,50 +18,51 @@ export const Route = createFileRoute("/admin-portal")({
   component: AdminLoginPage,
 });
 
-// Strong admin passkey gate. Mix of upper/lower letters, numbers and symbols.
-// Change this value to rotate the gate passkey. Owner-only knowledge.
-const ADMIN_PASSKEY = "Jerol@2026#PNG$Admin!";
-const PASSKEY_SESSION_KEY = "admin_gate_unlocked";
-const PASSKEY_ATTEMPTS_KEY = "admin_gate_attempts";
-
 function AdminLoginPage() {
   const navigate = useNavigate();
   const { user, isAdmin, loading } = useAuth();
+  // In-memory only — cannot be bypassed by tampering with sessionStorage/localStorage.
   const [unlocked, setUnlocked] = useState(false);
+  const attemptsRef = useRef(0);
   const [passkey, setPasskey] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [busy, setBusy] = useState(false);
 
   useEffect(() => {
-    if (typeof window !== "undefined") {
-      setUnlocked(sessionStorage.getItem(PASSKEY_SESSION_KEY) === "1");
-    }
-  }, []);
-
-  useEffect(() => {
     if (!loading && user && isAdmin) navigate({ to: "/admin-dashboard" });
   }, [user, isAdmin, loading, navigate]);
+
+  const logEvent = async (event: string, success: boolean, metadata?: Record<string, unknown>, emailValue?: string) => {
+    try {
+      await supabase.rpc("log_security_event", {
+        _event: event,
+        _email: emailValue ?? "",
+        _success: success,
+        _metadata: (metadata ?? null) as never,
+      });
+    } catch {
+      // best-effort
+    }
+  };
 
   const handlePasskey = async (e: React.FormEvent) => {
     e.preventDefault();
     setBusy(true);
     try {
-      const attempts = Number(sessionStorage.getItem(PASSKEY_ATTEMPTS_KEY) || "0");
-      if (attempts >= 5) {
+      if (attemptsRef.current >= 5) {
         toast.error("Too many attempts. Refresh and try later.");
         return;
       }
-      // Constant-time-ish comparison
-      if (passkey.length === ADMIN_PASSKEY.length && passkey === ADMIN_PASSKEY) {
-        sessionStorage.setItem(PASSKEY_SESSION_KEY, "1");
-        sessionStorage.removeItem(PASSKEY_ATTEMPTS_KEY);
-        await supabase.from("security_logs").insert({ event: "admin_gate_unlocked", success: true });
+      const { ok } = await verifyAdminPasskey({ data: { passkey } });
+      if (ok) {
+        attemptsRef.current = 0;
+        await logEvent("admin_gate_unlocked", true);
         setUnlocked(true);
         toast.success("Passkey accepted");
       } else {
-        sessionStorage.setItem(PASSKEY_ATTEMPTS_KEY, String(attempts + 1));
-        await supabase.from("security_logs").insert({ event: "admin_gate_failed", success: false });
+        attemptsRef.current += 1;
+        await logEvent("admin_gate_failed", false);
         toast.error("Invalid passkey");
         setPasskey("");
       }
@@ -75,11 +77,11 @@ function AdminLoginPage() {
     try {
       const { error } = await supabase.auth.signInWithPassword({ email, password });
       if (error) throw error;
-      await supabase.from("security_logs").insert({ event: "admin_login", email, success: true });
+      await logEvent("admin_login", true, undefined, email);
       toast.success("Welcome back");
     } catch (err) {
       const message = err instanceof Error ? err.message : "Authentication failed";
-      await supabase.from("security_logs").insert({ event: "admin_login", email, success: false, metadata: { message } });
+      await logEvent("admin_login", false, { message }, email);
       toast.error(message);
     } finally {
       setBusy(false);
