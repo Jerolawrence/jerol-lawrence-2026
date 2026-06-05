@@ -3,8 +3,8 @@ import { z } from "zod";
 
 // Server-side admin passkey verification. The passkey is read from a
 // server-only environment variable and is NEVER shipped to the browser.
-// A fallback is provided for projects that have not yet configured the secret.
-const FALLBACK_PASSKEY = "Jerol@2026#PNG$Admin!";
+// If the env var is not set, the gate is closed by default (returns ok:false)
+// rather than falling back to a known value committed in source.
 
 function timingSafeEqual(a: string, b: string): boolean {
   if (a.length !== b.length) return false;
@@ -20,7 +20,12 @@ export const verifyAdminPasskey = createServerFn({ method: "POST" })
     z.object({ passkey: z.string().min(1).max(200) }).parse(input)
   )
   .handler(async ({ data }) => {
-    const expected = process.env.ADMIN_GATE_PASSKEY || FALLBACK_PASSKEY;
+    const expected = process.env.ADMIN_GATE_PASSKEY;
+    if (!expected || expected.length === 0) {
+      // Fail closed — no fallback. Admin must set ADMIN_GATE_PASSKEY.
+      console.error("[admin-gate] ADMIN_GATE_PASSKEY is not configured");
+      return { ok: false };
+    }
     const ok = timingSafeEqual(data.passkey, expected);
     return { ok };
   });
