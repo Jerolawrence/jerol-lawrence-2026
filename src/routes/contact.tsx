@@ -49,11 +49,15 @@ function ContactPage() {
     setBusy(true);
     const { error } = await supabase.from("contact_messages").insert(parsed.data);
     setBusy(false);
-    if (error) toast.error(error.message);
-    else {
+    if (error) {
+      // Never surface raw backend errors to visitors.
+      console.error("contact form insert failed", error);
+      toast.error("Sorry, your message could not be sent. Please try again or email me directly.");
+    } else {
       toast.success("Message sent — I'll get back to you shortly.");
       setForm({ name: "", email: "", message: "" });
     }
+
   };
   return (
     <div className="min-h-screen bg-background">
@@ -124,8 +128,12 @@ function ContactPage() {
 
                 <form className="mt-6 space-y-4" onSubmit={submit}>
                   <div>
-                    <label className="text-sm font-medium text-foreground">Name</label>
+                    <label htmlFor="contact-name" className="text-sm font-medium text-foreground">Name</label>
                     <input
+                      id="contact-name"
+                      name="name"
+                      autoComplete="name"
+                      maxLength={100}
                       type="text"
                       value={form.name}
                       onChange={(e) => setForm({ ...form, name: e.target.value })}
@@ -135,8 +143,12 @@ function ContactPage() {
                     />
                   </div>
                   <div>
-                    <label className="text-sm font-medium text-foreground">Email</label>
+                    <label htmlFor="contact-email" className="text-sm font-medium text-foreground">Email</label>
                     <input
+                      id="contact-email"
+                      name="email"
+                      autoComplete="email"
+                      maxLength={255}
                       type="email"
                       value={form.email}
                       onChange={(e) => setForm({ ...form, email: e.target.value })}
@@ -146,8 +158,11 @@ function ContactPage() {
                     />
                   </div>
                   <div>
-                    <label className="text-sm font-medium text-foreground">Message</label>
+                    <label htmlFor="contact-message" className="text-sm font-medium text-foreground">Message</label>
                     <textarea
+                      id="contact-message"
+                      name="message"
+                      maxLength={2000}
                       rows={4}
                       value={form.message}
                       onChange={(e) => setForm({ ...form, message: e.target.value })}
@@ -156,6 +171,7 @@ function ContactPage() {
                       required
                     />
                   </div>
+
                   <Button variant="hero" size="lg" className="w-full" type="submit" disabled={busy}>
                     <Send className="h-4 w-4" />
                     {busy ? "Sending…" : "Send Message"}

@@ -23,10 +23,16 @@ const fadeUp = {
 
 const experience = [
   {
+    role: "Instructor & Teaching Support — ICT102 / Programming Fundamentals",
+    company: "Innovative University of Enga",
+    period: "31 Jul 2026 – Present",
+    desc: "Delivering hands-on, laboratory-based instruction and teaching support in ICT102: Applied Digital Skills, covering Microsoft 365, AI tools, data analysis and digital skills. Supporting Year 1 AIT students in Programming Fundamentals (Python) through practical coding, debugging and assessments — including stepping in for lectures and laboratory sessions when the course lecturer is unavailable. Also providing student consultations and ICT/laboratory technical support, including PC, network, software and programming troubleshooting.",
+  },
+  {
     role: "Information Officer",
     company: "Femili PNG Inc",
-    period: "Dec 2025 – Present",
-    desc: "Handling data entry, client referral records, reporting, data accuracy, confidentiality, backups, and basic IT support including computer and printer troubleshooting.",
+    period: "Dec 2025 – Jul 2026",
+    desc: "Handled data entry, client referral records, reporting, data accuracy, confidentiality, backups, and basic IT support including computer and printer troubleshooting.",
   },
   {
     role: "Inventory Assistant",
@@ -35,6 +41,7 @@ const experience = [
     desc: "Assisted with administration, inventory management, system updates, computer setup, basic networking, CCTV installation, and online sales/cashier support.",
   },
 ];
+
 
 const education = [
   {
