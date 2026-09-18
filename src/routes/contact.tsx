@@ -49,11 +49,15 @@ function ContactPage() {
     setBusy(true);
     const { error } = await supabase.from("contact_messages").insert(parsed.data);
     setBusy(false);
-    if (error) toast.error(error.message);
-    else {
+    if (error) {
+      // Never surface raw backend errors to visitors.
+      console.error("contact form insert failed", error);
+      toast.error("Sorry, your message could not be sent. Please try again or email me directly.");
+    } else {
       toast.success("Message sent — I'll get back to you shortly.");
       setForm({ name: "", email: "", message: "" });
     }
+
   };
   return (
     <div className="min-h-screen bg-background">
