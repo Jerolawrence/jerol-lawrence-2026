@@ -23,7 +23,7 @@ export function Footer() {
             <span>Jerol Lawrence</span>
           </div>
 
-          <nav className="flex items-center gap-6">
+          <nav aria-label="Footer navigation" className="flex flex-wrap items-center justify-center gap-6">
             <Link to="/about" className="text-sm text-muted-foreground transition-colors hover:text-foreground">About</Link>
             <Link to="/projects" className="text-sm text-muted-foreground transition-colors hover:text-foreground">Projects</Link>
             <Link to="/skills" className="text-sm text-muted-foreground transition-colors hover:text-foreground">Skills</Link>
@@ -35,11 +35,11 @@ export function Footer() {
               const inner = <Icon name={c.icon} className="h-4 w-4" />;
               const cls = "flex h-9 w-9 items-center justify-center rounded-lg border border-border text-muted-foreground transition-colors hover:bg-accent hover:text-foreground";
               return c.url ? (
-                <a key={c.id} href={c.url} target={c.url.startsWith("http") ? "_blank" : undefined} rel="noopener noreferrer" title={`${c.label}: ${c.value}`} className={cls}>
+                <a key={c.id} href={c.url} target={c.url.startsWith("http") ? "_blank" : undefined} rel="noopener noreferrer" aria-label={`${c.label}: ${c.value}`} title={`${c.label}: ${c.value}`} className={cls}>
                   {inner}
                 </a>
               ) : (
-                <span key={c.id} title={`${c.label}: ${c.value}`} className={cls}>{inner}</span>
+                <span key={c.id} role="img" aria-label={`${c.label}: ${c.value}`} title={`${c.label}: ${c.value}`} className={cls}>{inner}</span>
               );
             })}
           </div>

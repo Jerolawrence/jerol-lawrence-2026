@@ -110,6 +110,7 @@ function GalleryPage() {
   return (
     <div className="min-h-screen bg-background">
       <Header />
+      <main id="main-content">
       <section className="pt-32 pb-20">
         <div className="mx-auto max-w-5xl px-6">
           <Link
@@ -238,6 +239,7 @@ function GalleryPage() {
           </div>
         </div>
       </section>
+      </main>
       <Footer />
     </div>
   );

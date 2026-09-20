@@ -67,6 +67,7 @@ function ProjectsPage() {
   return (
     <div className="min-h-screen bg-background">
       <Header />
+      <main id="main-content">
 
       <section className="pt-32 pb-20">
         <div className="mx-auto max-w-6xl px-6">
@@ -117,6 +118,7 @@ function ProjectsPage() {
         </div>
       </section>
 
+      </main>
       <Footer />
     </div>
   );

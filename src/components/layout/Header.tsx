@@ -23,6 +23,12 @@ export function Header() {
       transition={{ duration: 0.5 }}
       className="fixed top-0 left-0 right-0 z-50 glass border-b border-border/50"
     >
+      <a
+        href="#main-content"
+        className="sr-only focus:not-sr-only focus:absolute focus:left-4 focus:top-3 focus:z-50 focus:rounded-md focus:bg-primary focus:px-4 focus:py-2 focus:text-sm focus:font-medium focus:text-primary-foreground"
+      >
+        Skip to main content
+      </a>
       <div className="mx-auto flex h-16 max-w-6xl items-center justify-between px-6">
         <Link to="/" className="flex items-center gap-2 font-heading text-lg font-bold tracking-tight text-foreground">
           <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-primary">
@@ -31,14 +37,15 @@ export function Header() {
           <span>Jerol Lawrence</span>
         </Link>
 
-        <nav className="hidden items-center gap-1 md:flex">
+        <nav aria-label="Main navigation" className="hidden items-center gap-1 md:flex">
           {navLinks.map((link) => {
             const isActive = location.pathname === link.to;
             return (
               <Link
                 key={link.to}
                 to={link.to}
-                className={`relative px-3 py-2 text-sm font-medium transition-colors ${
+                aria-current={isActive ? "page" : undefined}
+                className={`relative rounded-md px-3 py-2 text-sm font-medium transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring ${
                   isActive ? "text-foreground" : "text-muted-foreground hover:text-foreground"
                 }`}
               >
@@ -62,7 +69,10 @@ export function Header() {
 
         <button
           onClick={() => setMobileOpen(!mobileOpen)}
-          className="flex items-center justify-center rounded-md p-2 text-foreground md:hidden"
+          aria-label={mobileOpen ? "Close menu" : "Open menu"}
+          aria-expanded={mobileOpen}
+          aria-controls="mobile-nav"
+          className="flex items-center justify-center rounded-md p-2 text-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring md:hidden"
         >
           {mobileOpen ? <X className="h-5 w-5" /> : <Menu className="h-5 w-5" />}
         </button>
@@ -75,12 +85,13 @@ export function Header() {
           exit={{ opacity: 0, y: -10 }}
           className="border-t border-border bg-background px-6 py-4 md:hidden"
         >
-          <nav className="flex flex-col gap-2">
+          <nav id="mobile-nav" aria-label="Mobile navigation" className="flex flex-col gap-2">
             {navLinks.map((link) => (
               <Link
                 key={link.to}
                 to={link.to}
                 onClick={() => setMobileOpen(false)}
+                aria-current={location.pathname === link.to ? "page" : undefined}
                 className="rounded-md px-3 py-2 text-sm font-medium text-muted-foreground transition-colors hover:bg-accent hover:text-foreground"
               >
                 {link.label}

@@ -51,6 +51,7 @@ function Index() {
   return (
     <div className="min-h-screen bg-background">
       <Header />
+      <main id="main-content">
 
       {/* Hero */}
       <section className="relative overflow-hidden pt-32 pb-20 md:pt-44 md:pb-32">
@@ -172,6 +173,7 @@ function Index() {
         </div>
       </section>
 
+      </main>
       <Footer />
     </div>
   );
