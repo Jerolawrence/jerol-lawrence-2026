@@ -3,6 +3,7 @@ import { motion } from "framer-motion";
 import { Menu, X, Code2 } from "lucide-react";
 import { useState } from "react";
 import { Button } from "@/components/ui/button";
+import { useSiteSettings } from "@/hooks/use-site-settings";
 
 const navLinks = [
   { to: "/", label: "Home" },
@@ -15,6 +16,7 @@ const navLinks = [
 export function Header() {
   const [mobileOpen, setMobileOpen] = useState(false);
   const location = useLocation();
+  const { branding } = useSiteSettings();
 
   return (
     <motion.header
@@ -31,10 +33,20 @@ export function Header() {
       </a>
       <div className="mx-auto flex h-16 max-w-6xl items-center justify-between px-6">
         <Link to="/" className="flex items-center gap-2 font-heading text-lg font-bold tracking-tight text-foreground">
-          <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-primary">
-            <Code2 className="h-4 w-4 text-primary-foreground" />
+          <div className="flex h-8 w-8 shrink-0 items-center justify-center overflow-hidden rounded-full border border-border bg-primary">
+            {branding.logo_url ? (
+              <img
+                src={branding.logo_url}
+                alt=""
+                className="h-full w-full object-cover"
+                width={32}
+                height={32}
+              />
+            ) : (
+              <Code2 className="h-4 w-4 text-primary-foreground" />
+            )}
           </div>
-          <span>Jerol Lawrence</span>
+          <span>{branding.site_name || "Jerol Lawrence"}</span>
         </Link>
 
         <nav aria-label="Main navigation" className="hidden items-center gap-1 md:flex">
