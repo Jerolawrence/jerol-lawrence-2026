@@ -277,6 +277,7 @@ export type Database = {
           featured: boolean
           id: string
           image_url: string | null
+          is_published: boolean
           repo_url: string | null
           slug: string | null
           sort_order: number
@@ -293,6 +294,7 @@ export type Database = {
           featured?: boolean
           id?: string
           image_url?: string | null
+          is_published?: boolean
           repo_url?: string | null
           slug?: string | null
           sort_order?: number
@@ -309,6 +311,7 @@ export type Database = {
           featured?: boolean
           id?: string
           image_url?: string | null
+          is_published?: boolean
           repo_url?: string | null
           slug?: string | null
           sort_order?: number
@@ -496,6 +499,7 @@ export type Database = {
           category: string
           created_at: string
           id: string
+          is_published: boolean
           level: number
           name: string
           sort_order: number
@@ -505,6 +509,7 @@ export type Database = {
           category: string
           created_at?: string
           id?: string
+          is_published?: boolean
           level?: number
           name: string
           sort_order?: number
@@ -514,6 +519,7 @@ export type Database = {
           category?: string
           created_at?: string
           id?: string
+          is_published?: boolean
           level?: number
           name?: string
           sort_order?: number
@@ -528,6 +534,7 @@ export type Database = {
           created_by: string | null
           id: string
           image_url: string
+          is_published: boolean
           sort_order: number
           storage_path: string | null
           title: string | null
@@ -539,6 +546,7 @@ export type Database = {
           created_by?: string | null
           id?: string
           image_url: string
+          is_published?: boolean
           sort_order?: number
           storage_path?: string | null
           title?: string | null
@@ -550,6 +558,7 @@ export type Database = {
           created_by?: string | null
           id?: string
           image_url?: string
+          is_published?: boolean
           sort_order?: number
           storage_path?: string | null
           title?: string | null
